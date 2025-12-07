@@ -104,4 +104,4 @@ Figma:https://www.figma.com/board/FSKuJtGme38Go3OMNnMkAx/cycling%E7%94%BB%E9%9D%
 - [x] メールアドレス変更確認メール → メール内リンク → メールアドレス変更確定画面
 
 ### ER図
-https://gyazo.com/2e743b675b2dd73e36e6dbeff8aa7504
+https://gyazo.com/f044afc2874c44609ddd4de391629e2e
