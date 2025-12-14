@@ -2,7 +2,7 @@
 <p>トップページ</p>
   <% if user_signed_in? %>
     <p>ログイン中: <%=current_user.email %></p>
-    <%= link_to "ログアウト", destroy_user_sessions_path, data: { turbo_method: :delete } %>
+    <%= link_to "ログアウト", destroy_user_session_path, data: { turbo_method: :delete } %>
   <% else %>
     <%= link_to "新規登録", new_user_registration_path %>
     <%= link_to "ログイン", new_user_session_path %>
