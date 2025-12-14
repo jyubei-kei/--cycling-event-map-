@@ -64,7 +64,7 @@ Rails.application.configure do
 
   config.action_mailer.perform_caching = false
 
-  conrig.action_mailer.default_url_options = {
+  config.action_mailer.default_url_options = {
     host: 'cycling-event-map-jyubei-64ee25812261.herokuapp.com',
     protocol: 'https'
   }
