@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  get 'mypages/show'
   devise_for :users
   root "home#top"
   get "/mypage", to: "mypages#show"
@@ -7,4 +6,12 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "articles#index"
+  namespace :admin do
+    get 'events/index'
+    get 'events/show'
+    get 'events/new'
+    get 'events/edit'
+    root "dashboard#index"
+    resources :events
+  end
 end
