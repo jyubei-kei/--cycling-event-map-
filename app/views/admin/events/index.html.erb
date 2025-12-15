@@ -1,0 +1,12 @@
+<h1>イベント一覧</h1>
+<p><%= link_to "新規作成", new_admin_event_path %></p>
+
+<ul>
+  <% @events.each do |event| %>
+    <li>
+      <%= link_to event.name, admin_event_path(event)%>
+      (<%= link_to "編集", edit_admin_event_path(event) %>)
+      (<%= link_to "削除", admin_event_path(event), data: { turbo_method: :delete, turbo_confirm: "削除しますか？" } %>)
+    </li>
+  <% end %>
+</ul>
