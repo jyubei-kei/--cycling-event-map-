@@ -1,0 +1,21 @@
+<%= form_with model: [:admin, @event, @aid_station] do |f| %>
+  <% if @aid_station.errors.any? %>
+    <ul>
+      <% @aid_station.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+   <% end %>
+
+  <div>
+    <%= f.label :name, "エイド名" %><br>
+    <%= f.text_field :name %>
+  </div>
+
+  <div>
+    <%= f.label :description, "説明" %><br>
+    <%= f.text_area :description %>
+  </div>
+
+  <%= f.submit %>
+<% end %>

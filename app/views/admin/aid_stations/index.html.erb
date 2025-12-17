@@ -1,0 +1,23 @@
+<h1><%= @event.name %> のエイド一覧</h1>
+
+<p>
+  <%= link_to "新規エイド", new_admin_event_aid_station_path(@event) %>
+</p>
+
+<ul>
+  <% @aid_stations.each do |aid| %>
+    <li>
+      <%= aid.name %>
+      |
+      <%= link_to "編集", edit_admin_event_aid_station_path(@event, aid) %>
+      |
+      <%= link_to "削除",
+                  admin_event_aid_station_path(@event, aid),
+                  data: { turbo_method: :delete, turbo_confirm: "削除しますか？" } %>
+    </li>
+  <% end %>
+</ul>
+
+<p>
+  <%= link_to "イベントへ戻る", admin_event_path(@event) %>
+</p>
