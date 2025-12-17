@@ -12,6 +12,9 @@ Rails.application.routes.draw do
     get 'events/new'
     get 'events/edit'
     root "dashboard#index"
-    resources :events
+
+    resources :events do
+      resources :aid_stations
+    end
   end
 end

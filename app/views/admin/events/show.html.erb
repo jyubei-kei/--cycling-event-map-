@@ -5,3 +5,12 @@
   <%= link_to "編集", edit_admin_event_path(@event) %> |
   <%= link_to "一覧へ", admin_events_path %>
 </p>
+
+<h2>エイド一覧</h2>
+<ul>
+  <% @event.aid_stations.each do |aid| %>
+    <li><%= aid.name %></li>
+  <% end %>
+</ul>
+
+<%= link_to "エイド管理", admin_event_aid_stations_path(@event) %>
