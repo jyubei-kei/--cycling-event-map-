@@ -46,6 +46,6 @@ class Admin::AidStationsController < Admin::BaseController
   end
 
   def aid_station_params
-    params.require(:aid_station).permit(:name, :description)
+    params.require(:aid_station).permit(:name, :description, :latitude, :longitude)
   end
 end
