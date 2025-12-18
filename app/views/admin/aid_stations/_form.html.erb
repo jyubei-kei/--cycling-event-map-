@@ -35,14 +35,26 @@
       if(!mapEl) return;
 
       const latInput = document.getElementById("aid_station_latitude");
-      const lngInput = document.getElementById("aid_station_longtude");
+      const lngInput = document.getElementById("aid_station_longitude");
 
-      const map = L.map("map").setView([34.55589157441934, 132.38015867738127], 10);
-      L.titleLayer("https://{s}.title.openstreetmap.org/{z}/{x}*{y}.png", {
+      const initialLat = parseFloat(latInput.value) || 34.55589157441934;
+      const initialLng = parseFloat(lngInput.value) || 132.38015867738127;
+
+      if (mapEl._leaflet_id) {
+        mapEl._leaflet_id = null;
+        mapEl.innerHTML = "";
+      }
+
+      const map = L.map("map").setView([initialLat, initialLng], 10);
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: "&copy; OpenStreetMap contributors"
       }).addTo(map);
 
-      let marker;
+      let marker = null;
+
+      if(latInput.value && lngInput.value){
+        marker = l.marker([initialLat, initialLng]).addTo(map);
+      }
 
       map.on("click", (e) => {
         const { lat, lng } = e.latlng;
