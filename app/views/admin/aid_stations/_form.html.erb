@@ -53,13 +53,13 @@
       let marker = null;
 
       if(latInput.value && lngInput.value){
-        marker = l.marker([initialLat, initialLng]).addTo(map);
+        marker = L.marker([initialLat, initialLng]).addTo(map);
       }
 
       map.on("click", (e) => {
         const { lat, lng } = e.latlng;
 
-        latInput.value = Lat.toFixed(6);
+        latInput.value = lat.toFixed(6);
         lngInput.value = lng.toFixed(6);
 
         if(marker) marker.remove();

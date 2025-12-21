@@ -1,13 +1,11 @@
-<h1>マイページ</h1>
-<p><%= @user.email %></p>
+<h1>イベント一覧</h1>
 
-<h2>イベント</h2>
 <ul>
   <% @events.each do |event| %>
     <li>
       <%= link_to event.name, event_path(event) %>
     </li>
-   <% end %>
+  <% end %>
 </ul>
 
 <p><%= link_to "トップページへ戻る", root_path %></p>

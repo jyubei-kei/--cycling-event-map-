@@ -28,3 +28,28 @@
     });
   });
   </script>
+
+  <h2>エイド一覧</h2>
+
+  <% if @aid_stations.any? %>
+    <ul>
+      <% @aid_stations.each do |aid| %>
+        <li>
+          <strong><%= aid.name %></strong>
+          <% if aid.description.present? %>
+            - <%= aid.description %>
+          <% end %>
+
+          <% if aid.latitude.present? && aid.longitude.present? %>
+            (<%= aid.latitude %>), <%= aid.longitude %>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>まだエイドが登録されていません。</p>
+  <% end %>
+
+<p><%= link_to "トップページへ戻る", root_path %></p>
+
+<p><%= link_to "管理者トップへ戻る", admin_root_path %></p>
