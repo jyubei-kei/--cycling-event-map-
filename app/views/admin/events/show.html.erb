@@ -1,43 +1,93 @@
 <h1><%= @event.name %></h1>
 <p><%= @event.description %></p>
 
-<div id= "map" style = "height: 400px;"></div>
+<div id="map-<%= @event.id %>" style="height: 400px;"></div>
 
 <script>
-  document.addEventListener("turbo:load", () => {
-    const mapEl = document.getElementById("map");
-    if(!mapEl) return;
+  function initAdminEventMap() {
+    const mapId = "map-<%= @event.id %>";
+    const mapEl = document.getElementById(mapId);
+    if (!mapEl) return;
 
-      const aidStations = <%= raw(
-        @event.aid_stations.select(:name, :latitude, :longitude).to_json
-      ) %>;
+    // 既存 map があれば破棄（イベント行き来で残るのを防ぐ）
+    if (window.__adminEventMap) {
+      window.__adminEventMap.remove();
+      window.__adminEventMap = null;
+    }
 
-    const map = L.map("map").setView([34.55589157441934, 132.38015867738127], 10);
+    // DOM残骸対策
+    mapEl.innerHTML = "";
+
+    const aidStations = <%= raw(
+      @event.aid_stations
+        .where.not(latitude: nil, longitude: nil)
+        .select(:name, :latitude, :longitude)
+        .map { |a| { name: a.name, latitude: a.latitude.to_f, longitude: a.longitude.to_f } }
+        .to_json
+    ) %>;
+
+    const map = L.map(mapEl).setView([34.55589157441934, 132.38015867738127], 10);
+    window.__adminEventMap = map;
 
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution: "&copy; OpenStreetMap contributors"
     }).addTo(map);
 
-    aidStations.forEach(aid => {
-      if(!aid.latitude || !aid.longitude) return;
-
-      L.marker([aid.latitude, aid.longitude])
-        .addTo(map)
-        .bindPopup(aid.name);
+    const markers = [];
+    aidStations.forEach((aid) => {
+      const lat = Number(aid.latitude);
+      const lng = Number(aid.longitude);
+      if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
+      markers.push(L.marker([lat, lng]).addTo(map).bindPopup(aid.name));
     });
+
+    if (markers.length > 0) {
+      const group = L.featureGroup(markers);
+      map.fitBounds(group.getBounds().pad(0.2));
+    }
+  }
+
+  document.addEventListener("turbo:load", initAdminEventMap);
+  document.addEventListener("turbo:render", initAdminEventMap);
+
+  document.addEventListener("turbo:before-cache", () => {
+    if (window.__adminEventMap) {
+      window.__adminEventMap.remove();
+      window.__adminEventMap = null;
+    }
   });
-  </script>
+</script>
 
 <p>
   <%= link_to "編集", edit_admin_event_path(@event) %> |
   <%= link_to "一覧へ", admin_events_path %>
 </p>
 
-<h2>エイド一覧</h2>
+<h2>エイドステーション</h2>
+
+<p>
+  <%= link_to "エイド一覧へ", admin_event_aid_stations_path(@event) %>
+  <%= link_to "エイド新規作成", new_admin_event_aid_station_path(@event) %>
+</p>
+
+<% if @event.aid_stations.any? %>
 <ul>
   <% @event.aid_stations.each do |aid| %>
-    <li><%= aid.name %></li>
+    <li>
+      <strong><%= aid.name %></strong>
+      <% if aid.description.present? %>
+        -<%= aid.description %>
+      <% end %>
+      |
+      <%= link_to "編集", edit_admin_event_aid_station_path(@event, aid) %>
+      |
+      <%= link_to "削除", admin_event_aid_station_path(@event, aid), data: {turbo_method: :delete, turbo_confirm: "削除しますか?"} %>
+    </li>
   <% end %>
 </ul>
+<% else %>
+  <p>まだエイドが登録されていません。</p>
+<% end %>
 
-<%= link_to "エイド管理", admin_event_aid_stations_path(@event) %>
+<p><%= link_to "エイド管理", admin_event_aid_stations_path(@event) %></p>
+<p><%= link_to "管理者トップへ戻る", admin_root_path %></p>

@@ -1,5 +1,8 @@
 class MypagesController < ApplicationController
+  before_action :authenticate_user!
+
   def show
-    @event = Event.find(params[:id])
+    @user = current_user
+    @events = @user.events
   end
 end

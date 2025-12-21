@@ -8,6 +8,11 @@
   <% end %>
 
   <div>
+    <%= f.label :published, "公開する" %>
+    <%= f.check_box :published %>
+  </div>
+
+  <div>
     <%= f.label :name, "イベント名" %><br>
     <%= f.text_field :name %>
   </div>

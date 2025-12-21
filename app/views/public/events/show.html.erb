@@ -1,0 +1,78 @@
+<h1><%= @event.name %></h1>
+
+<p><%= @event.description %></p>
+
+<div id="map-<%= @event.id %>" style="height: 380px; margin-top: 16px;"></div>
+
+<script>
+  function initPublicEventMap() {
+    const mapId = "map-<%= @event.id %>";
+    const mapEl = document.getElementById(mapId);
+    if (!mapEl) return;
+
+    // すでに map があれば破棄（これでイベント切替でも混ざらない）
+    if (window.__publicEventMap) {
+      window.__publicEventMap.remove();
+      window.__publicEventMap = null;
+    }
+
+    const aidStations = <%= raw(
+      @aid_stations
+        .where.not(latitude: nil, longitude: nil)
+        .select(:name, :latitude, :longitude)
+        .map { |a| { name: a.name, latitude: a.latitude.to_f, longitude: a.longitude.to_f } }
+        .to_json
+    ) %>;
+
+    const map = L.map(mapId).setView([34.55589157441934, 132.38015867738127], 10);
+    window.__publicEventMap = map;
+
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: "&copy; OpenStreetMap contributors"
+    }).addTo(map);
+
+    const markers = [];
+    aidStations.forEach((aid) => {
+      if (!aid.latitude || !aid.longitude) return;
+      markers.push(L.marker([aid.latitude, aid.longitude]).addTo(map).bindPopup(aid.name));
+    });
+
+    if (markers.length > 0) {
+      map.fitBounds(L.featureGroup(markers).getBounds().pad(0.2));
+    }
+  }
+
+  document.addEventListener("turbo:load", initPublicEventMap);
+
+  document.addEventListener("turbo:before-cache", () => {
+    if (window.__publicEventMap) {
+      window.__publicEventMap.remove();
+      window.__publicEventMap = null;
+    }
+  });
+</script>
+
+<h2>エイド一覧</h2>
+
+<% if @aid_stations.any? %>
+  <ul>
+    <% @aid_stations.each do |aid| %>
+      <li>
+        <strong><%= aid.name %></strong>
+        <% if aid.description.present? %>
+          - <%= aid.description %>
+        <% end %>
+
+        <% if aid.latitude.present? && aid.longitude.present? %>
+          (<%= aid.latitude %>, <%= aid.longitude %>)
+        <% end %>
+      </li>
+    <% end %> 
+  </ul>
+<% else %>
+  <p>まだエイドが登録されていません。</p>
+<% end %>
+  
+<p><%= link_to "一覧へ戻る", events_path %></p>
+
+<p><%= link_to "トップページへ戻る", root_path %></p>
