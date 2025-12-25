@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  event: one
+  name: MyString
+  description: MyText
+  route_url: MyString
+
+two:
+  event: two
+  name: MyString
+  description: MyText
+  route_url: MyString

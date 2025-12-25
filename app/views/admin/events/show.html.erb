@@ -89,5 +89,6 @@
   <p>まだエイドが登録されていません。</p>
 <% end %>
 
+<p><%= link_to "コース管理へ", admin_event_courses_path(@event) %></p>
 <p><%= link_to "エイド管理", admin_event_aid_stations_path(@event) %></p>
 <p><%= link_to "管理者トップへ戻る", admin_root_path %></p>

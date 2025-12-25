@@ -11,35 +11,20 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
-
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-    crossorigin=""
-  />
-  <script
-    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-    crossorigin=""
-  ></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   </head>
 
   <body>
     <header class="topbar">
       <div class="topbar__inner">
         <div class="topbar__logo">
-          <span class="topbar__logoLink">CyclingEventMap</span>
+          <%= link_to "CyclingEventMap(管理)", root_path, class: "topbar__logoLink" %>
         </div>
 
         <nav class="topbar__nav">
-          <% if user_signed_in? %>
+            <%= link_to "公開ページへ", events_path, class: "btn btn--light" %>
             <%= link_to "ログアウト", destroy_user_session_path, data: { turbo_method: :delete }, class: "btn btn--light" %>
-
-          <% else %>
-            <%= link_to "ログイン", new_user_session_path, class: "btn btn--orange" %>
-            <%= link_to "新規登録", new_user_registration_path, class: "btn btn--orange" %>
-          <% end %>
         </nav>
       </div>
     </header>

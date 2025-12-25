@@ -1,12 +1,15 @@
 Rails.application.routes.draw do
   devise_for :users
   root "home#top"
-  get "/mypage", to: "mypages#show"
+  get "/mypage", to: "public/mypages#show"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   #参加者用
   scope module: :public do
-    resources :events, only: %i[index show]
+    resources :events, only: [:index, :show] do
+      post :join, on: :member
+    end
+    resource :mypage, only: [:show]
   end
 
   # Defines the root path route ("/")
@@ -18,6 +21,7 @@ Rails.application.routes.draw do
 
     resources :events do
       resources :aid_stations
+      resources :courses
     end
   end
 end

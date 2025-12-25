@@ -1,13 +1,21 @@
-<h1>マイページ</h1>
-<p><%= @user.email %></p>
+<h1>参加者マイページ</h1>
+<p><%= @user.email %> さんのマイページ</p>
 
-<h2>イベント</h2>
-<ul>
-  <% @events.each do |event| %>
-    <li>
-      <%= link_to event.name, event_path(event) %>
-    </li>
-   <% end %>
-</ul>
+<div class="card">
+  <h2 class="card__title">参加予定のイベント</h2>
 
-<p><%= link_to "トップページへ戻る", root_path %></p>
+  <% if @events.any? %>
+    <ul>
+      <% @events.each do |event| %>
+        <li>
+         <%= link_to event.name, event_path(event) %>
+         (<%= l event.starts_at, format: :short %>)
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>まだ参加イベントがありません。</p>
+  <% end %>
+</div>
+
+<p><%= link_to "公開イベント一覧へ戻る", events_path, class: "btn btn--secondary" %></p>
