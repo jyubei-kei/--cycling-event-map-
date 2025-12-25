@@ -1,15 +1,17 @@
-<h1>イベント一覧</h1>
-<p><%= link_to "新規作成", new_admin_event_path %></p>
+<div class="card">
+  <h1>イベント一覧</h1>
+  <p><%= link_to "新規作成", new_admin_event_path %></p>
 
-<ul>
-  <% @events.each do |event| %>
-    <li>
-      <%= link_to event.name, admin_event_path(event)%>
-      (<%= link_to "編集", edit_admin_event_path(event) %>)
-      (<%= link_to "削除", admin_event_path(event), data: { turbo_method: :delete, turbo_confirm: "削除しますか？" } %>)
-      (<%= event.published? ? "公開" : "非公開" %>)
-    </li>
-  <% end %>
-</ul>
+  <ul>
+    <% @events.each do |event| %>
+      <li>
+        <%= link_to event.name, admin_event_path(event)%>
+        (<%= link_to "編集", edit_admin_event_path(event) %>)
+        (<%= link_to "削除", admin_event_path(event), data: { turbo_method: :delete, turbo_confirm: "削除しますか？" } %>)
+        (<%= event.published? ? "公開" : "非公開" %>)
+      </li>
+    <% end %>
+  </ul>
+</div>
 
 <p><%= link_to "管理者トップへ戻る", admin_root_path %></p>

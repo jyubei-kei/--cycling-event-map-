@@ -72,7 +72,43 @@
 <% else %>
   <p>まだエイドが登録されていません。</p>
 <% end %>
-  
-<p><%= link_to "一覧へ戻る", events_path %></p>
 
-<p><%= link_to "トップページへ戻る", root_path %></p>
+<h2>コース</h2>
+
+<% if @event.courses.any? %>
+  <ul>
+    <% @event.courses.each do |course| %>
+      <li>
+        <strong><%= course.name %></strong>
+        <% if course.route_url.present? %>
+          - <%= link_to "コースURL", course.route_url, target: "_blank", rel: "noopener", class: "btn btn--light" %>
+        <% else %>
+          - URL未登録
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>コースはまだ登録されていません。</p>
+<% end %>
+
+<div style="margin: 12px 0;">
+  <% if user_signed_in? %>
+    <% if @joined %>
+      <%= button_to "参加をキャンセル",
+          join_event_path(@event),
+          method: :post,
+          class: "btn btn-logout",
+          data: { turbo_confirm: "参加をキャンセルしますか？" } %>
+    <% else %>
+      <%= button_to "このイベントに参加する",
+          join_event_path(@event),
+          method: :post,
+          class: "btn btn--orange" %>
+    <% end %>
+  <% else %>
+    <%= link_to "ログインして参加する", new_user_session_path, class: "btn btn--light" %>
+  <% end %>
+</div>
+
+<p><%= link_to "公開イベント一覧へ戻る", events_path, class: "btn btn--secondary" %></p>

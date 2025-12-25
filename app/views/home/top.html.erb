@@ -3,20 +3,36 @@
   <% if user_signed_in? %>
     <p>ログイン中: <%=current_user.email %></p>
 
-    <%= link_to "マイページ", mypage_path %>
+    <%= link_to "マイページ", mypage_path, class: "btn btn--light" %>
 
     <% if current_user.admin? %>
-      <%= link_to "管理者画面", admin_root_path %>
+      <%= link_to "管理者画面", admin_root_path, class: "btn btn-secondary" %>
     <% end%>
 
-    <%= link_to "ログアウト", destroy_user_session_path, data: { turbo_method: :delete } %>
+    <%= link_to "ログアウト", destroy_user_session_path, data: { turbo_method: :delete }, class: "btn btn-logout" %>
   <% else %>
+
+  <div class="card">
+    <h2 class="card__title">サービス概要</h2>
     <p>
       サイクリングイベント向けの位置共有・コース確認サービスです。<br>
       参加者はコース情報を地図で確認できます。
     </p>
-    
-    <%= link_to "イベント一覧", events_path %>
-    <%= link_to "新規登録", new_user_registration_path %>
-    <%= link_to "ログイン", new_user_session_path %>
-  <% end %>
+  </div>
+
+  <div class="card">
+    <h2 class="card__title">公開イベント一覧</h2>
+
+    <% if @events.any? %>
+      <ul>
+        <% @events.each do |event| %>
+          <li>
+            <%= link_to event.name, event_path(event) %>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p>現在公開中のイベントはありません。</p>
+    <% end %>
+  </div>
+<% end %>

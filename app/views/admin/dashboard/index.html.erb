@@ -1,6 +1,9 @@
 <h1>管理者ダッシューボード</h1>
-<p>ようこそ、<%= current_user.email %></p>
 
-<ul>
-  <li><%= link_to "イベント管理", admin_events_path %></li>
-</ul>
+<div class="card">
+  <p>ようこそ、<%= current_user.email %></p>
+
+  <ul>
+    <li><%= link_to "イベント管理", admin_events_path, class: "btn btn--orange"%></li>
+  </ul>
+</div>

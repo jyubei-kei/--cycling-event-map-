@@ -1,0 +1,17 @@
+<h1>マイページ</h1>
+
+<% if @events.any? %>
+  <ul>
+    <% @events.each do |event| %>
+      <li>
+        <strong><%= event.name %></strong>
+        <%= link_to "詳細へ", event_path(event) %>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>参加中の公開イベントはまだありません。</p>
+  <%= link_to "公開イベントを見る", events_path %>
+<% end %>
+
+<p><%= link_to "公開イベント一覧へ戻る", events_path, class: "btn btn--secondary" %></p>

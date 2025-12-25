@@ -1,0 +1,25 @@
+<h1>コース一覧:<%= @event.name %></h1>
+
+<p>
+  <%= link_to "コース新規作成", new_admin_event_course_path(@event) %> |
+  <%= link_to "イベントへ戻る", admin_event_path(@event) %>
+</p>
+
+<% if @courses.any? %>
+  <ul>
+    <% @courses.each do |course| %>
+      <li>
+        <strong><%= course.name %></strong>
+        -
+        <%= link_to course.route_url, course.route_url, target: "_blank", rel: "noopener" %>
+        |
+        <%= link_to "編集", edit_admin_event_course_path(@event, course) %>
+        |
+        <%= link_to "削除", admin_event_course_path(@event, course),
+              data: { turbo_method: :delete, turbo_confirm: "削除しますか？" } %>
+      </li>
+      <% end %>
+  </ul>
+  <% else %>
+    <p>まだコースがありません。</p>
+   <% end %>
